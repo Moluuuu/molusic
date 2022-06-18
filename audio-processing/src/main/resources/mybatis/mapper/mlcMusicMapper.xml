@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--绑定接口-->
+<mapper namespace="com.molu.processing.mapper.MlcMusicMapper">
+
+    <select id="musicQueryAll" resultType="MlcMusic">
+        select *
+        from `mlc_music`
+    </select>
+
+    <select id="musicQueryById" resultType="MlcMusic">
+        select *
+        from `mlc_music`
+        where id = #{id}
+    </select>
+
+
+    <select id="musicSearch" resultType="MlcMusic">
+
+        select * from `mlc_music`
+        <where>
+            <if test="keywords!=null">
+                singer_name like "%"#{keywords}"%" or name like "%"#{keywords}"%" or album_name like "%"#{keywords}"%"
+            </if>
+        </where>
+    </select>
+</mapper>

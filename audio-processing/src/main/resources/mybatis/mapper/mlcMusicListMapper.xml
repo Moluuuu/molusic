@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--绑定接口-->
+<mapper namespace="com.molu.processing.mapper.MlcMusicListMapper">
+
+    <select id="musicListQueryAll" resultType="MlcMusicList">
+        select *
+        from `mlc_music_list`
+    </select>
+
+    <select id="musicListQueryById" resultType="MlcMusicList">
+        select *
+        from `mlc_music_list`
+        where id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,17 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: gateway
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        # 服务注册地址
+        server-addr: 124.221.246.31:8848
+      config:
+        # 配置中心地址
+        server-addr: 124.221.246.31:8848
+        # 配置文件格式
+        file-extension: yml

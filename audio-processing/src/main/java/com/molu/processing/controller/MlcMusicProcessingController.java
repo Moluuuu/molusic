@@ -45,6 +45,7 @@ public class MlcMusicProcessingController {
     }
 
     // 上传完成后点击确认时执行的操作，作用是清空临时目录中的文件
+    // TODO 这个接口迁到 file模块下，业务逻辑要改 不能删 .gitkeep占位文件
     @PostMapping(value = "/cleanup")
     public JSONObject getSongInfo(@RequestBody JSONObject jsonObject) {
         JSONArray deleteFiles = jsonObject.getJSONArray("deleteFiles");

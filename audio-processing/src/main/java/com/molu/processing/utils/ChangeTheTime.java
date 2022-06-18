@@ -22,7 +22,6 @@ public class ChangeTheTime {
             FileInputStream in = new FileInputStream("src/main/resources/properties/config.properties");
             pro.load(in);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             System.out.println("未找到指定配置文件:  src/doTheCase/config.properties");
             e.printStackTrace();
         }
@@ -96,7 +95,6 @@ public class ChangeTheTime {
             br = new BufferedReader(new FileReader(pro.getProperty("savePath") + File.separator + pro.getProperty("songName") + ".lrc"));
             bw = new BufferedWriter(new FileWriter(pro.getProperty("ChangeSavePath") + File.separator + pro.getProperty("songName") + ".lrc"));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             System.out.println("请检查输入输出文件路径");
             e.printStackTrace();
             System.exit(0);

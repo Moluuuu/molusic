@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# 保留目录结构
+/src/main/resources/lyric/*
+/src/main/resources/music/*
+/src/main/resources/upload/*
+!.gitkeep

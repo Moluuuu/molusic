@@ -7,7 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 class AudioProcessingApplicationTests {
 
     @Test
-    void contextLoads() {
+    void getLyric() {
+
     }
 
 }

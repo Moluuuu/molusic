@@ -1,10 +1,10 @@
 package com.molu.processing.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.molu.processing.pojo.MlcMusic;
+import com.molu.entity.MlcMusic;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface MlcMusicService {
+public interface AudioProcessingService {
 
 //    String uploadFile(MultipartFile file);
 //
@@ -12,5 +12,5 @@ public interface MlcMusicService {
 //
 //    boolean removeFile(String bucketName, String fileKey);
 
-    public JSONObject uploadProcessing(MultipartFile sourceFile, MlcMusic music, boolean isTranslate);
+    public JSONObject processing(MultipartFile sourceFile, MlcMusic music, boolean isTranslate);
 }

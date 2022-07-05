@@ -111,10 +111,15 @@
             </dependency>
 
             <!-- Mybatis 依赖配置 -->
-            <dependency>
+            <!--<dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${spring-boot.mybatis}</version>
+            </dependency>-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${spring-boot.mybatisplus}</version>
             </dependency>
 
             <!-- 验证码 -->

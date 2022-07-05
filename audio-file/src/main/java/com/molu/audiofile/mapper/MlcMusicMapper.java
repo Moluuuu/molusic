@@ -1,7 +1,7 @@
-package com.molu.processing.mapper;
+package com.molu.audiofile.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.molu.processing.pojo.MlcMusic;
+import com.molu.entity.MlcMusic;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

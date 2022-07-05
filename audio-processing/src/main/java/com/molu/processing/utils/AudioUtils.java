@@ -1,6 +1,6 @@
 package com.molu.processing.utils;
 
-import com.molu.processing.dictionary.MFD;
+import com.molu.dictionary.MFD;
 import com.molu.processing.utils.ncmdump.Dump;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
@@ -16,10 +16,6 @@ import java.util.Map;
 
 public class AudioUtils {
     private static final Logger logger = LoggerFactory.getLogger(AudioUtils.class);
-    // 初始化静态变量
-    private static final String FLAC = ".flac";
-    private static final String WAV = ".wav";
-    private static final String MP3 = ".mp3";
 
     private static final int BITRATE = 3200000;
     private static final int Channels = 2;

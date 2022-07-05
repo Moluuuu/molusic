@@ -1,7 +1,7 @@
 package com.molu.processing.service;
 
 import com.alibaba.fastjson.JSON;
-import com.molu.processing.dictionary.MFD;
+import com.molu.dictionary.MFD;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
 import com.qiniu.storage.Configuration;

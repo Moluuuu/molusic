@@ -1,11 +1,13 @@
-package com.molu.processing.mapper;
+package com.molu.audiofile.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.molu.processing.pojo.MlcAlbum;
+import com.molu.entity.MlcAlbum;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Mapper
 @Repository
 public interface MlcAlbumMapper extends BaseMapper<MlcAlbum> {
     // 查询全部歌曲信息

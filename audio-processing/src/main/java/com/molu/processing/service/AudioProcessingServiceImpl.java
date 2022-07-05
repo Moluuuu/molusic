@@ -1,11 +1,12 @@
 package com.molu.processing.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.molu.processing.dictionary.MFD;
-import com.molu.processing.mapper.MlcMusicMapper;
-import com.molu.processing.pojo.MlcMusic;
+import com.alibaba.nacos.shaded.org.checkerframework.checker.units.qual.A;
+import com.molu.dictionary.MFD;
+import com.molu.entity.MlcMusic;
+import com.molu.feign.client.AudioFileClient;
 import com.molu.processing.utils.AudioUtils;
-import com.molu.processing.utils.DataUtils;
 import com.molu.processing.utils.MusicUtils;
 import com.molu.processing.utils.ncmdump.Dump;
 import lombok.SneakyThrows;
@@ -14,14 +15,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.List;
 import java.util.Objects;
 
 
 @Service
-public class MlcMusicServiceImpl implements MlcMusicService {
+public class AudioProcessingServiceImpl implements AudioProcessingService {
+
     @Autowired
-    MlcMusicMapper mlcMusicMapper;
+    AudioFileClient fileClient;
 
     @Autowired
     UploadService uploadService;
@@ -30,8 +31,7 @@ public class MlcMusicServiceImpl implements MlcMusicService {
     // 文件上传处理
     @SneakyThrows
     @Override
-    public JSONObject uploadProcessing(MultipartFile sourceFile, MlcMusic music, boolean isTranslate) {
-
+    public JSONObject processing(MultipartFile sourceFile, MlcMusic music, boolean isTranslate) {
         // 作用域提升
         String processedName = null;
         File target = null;
@@ -53,7 +53,7 @@ public class MlcMusicServiceImpl implements MlcMusicService {
             convert = false;
         }
         // 如果上传的ncm
-        if (filename.endsWith(".ncm")) {
+        if (filename.endsWith(MFD.NCM)) {
             Dump dump = new Dump(source);
             boolean execute = dump.execute();
             // 如果转换成功 构建新的 source对象 即转换得到的 xxxx.flac
@@ -69,65 +69,22 @@ public class MlcMusicServiceImpl implements MlcMusicService {
             dataJson.put("conversionInfo", AudioUtils.formatConversion(source, target));
         }
 
-
+        MlcMusic musicInfo = MusicUtils.getSongInfo(target, music);
         // 得到音乐的信息
-        dataJson.put("musicInfo", MusicUtils.getSongInfo(target, music));
+        dataJson.put("musicInfo", musicInfo);
         // 获取歌词文件并写入到上传路径
         MusicUtils.findLyrics(MusicUtils.getSongName(processedName), isTranslate);
         // 把歌词文件内容写入到 mp3文件里 并将文件保存到上传路径
         MusicUtils.writeAndSaveLyricFile(target);
-        // 使用新路径
-//            target = new File(MFD.UPLOADFILEPATH, URLEncoder.encode(target.getName(),"utf-8"));
 
-        // 数据库操作，先查一下数据库中有没有该音乐文件的数据
-        List<MlcMusic> mlcMusics = mlcMusicMapper.selectByMap(DataUtils.selectMap("file_name", processedName));
-        // 没有就执行插入
-        if (mlcMusics.isEmpty()) {
-            mlcMusicMapper.insert(music);
+        /*远程调用，将音频文件信息保存到数据库*/
+        boolean saved = fileClient.saveFileInfo(dataJson.getJSONObject("musicInfo"));
+        dataJson.put("saveState", "未存入数据库");
+        if (saved){
             dataJson.put("qiniuInfo", uploadService.uploadToQiNiu(target));
-            System.out.println("处理完成");
-            return dataJson;
+            dataJson.put("saveState", "已存入数据库");
         }
-        // 如果存在就进行比较，如果一样就跳过，否则 执行更新操作
-        MlcMusic mlcMusic = mlcMusics.get(0);
-        // 这里的操作是因为 id是随机产生的， creteTime是当前时间
-        // 所以二者不可能相同 赋值后二者相同 如果其他数据也相同则不会通过判断
-        music.setId(mlcMusic.getId());
-        mlcMusic.setCreateTime(music.getCreateTime());
-        if (!Objects.equals(mlcMusic, music)) {
-            mlcMusicMapper.updateById(music);
-        }
-        System.out.println("处理完成");
-        dataJson.put("qiniuInfo", uploadService.uploadToQiNiu(target));
 
         return dataJson;
     }
-
-
-    /*public static void main(String[] args) {
-        try {
-            File source = new File("D:\\IDEAproject\\molusic\\audio-processing\\src\\main\\resources\\music\\野外合作社-阳光中的向日葵（Live）.flac");
-            File target = new File("D:\\IDEAproject\\molusic\\audio-processing\\src\\main\\resources\\music\\野外合作社-阳光中的向日葵（Live）.mp3");
-
-            //Audio Attributes
-            AudioAttributes audio = new AudioAttributes();
-            audio.setCodec("libmp3lame");
-            audio.setBitRate(128000);
-            audio.setChannels(2);
-            audio.setSamplingRate(44100);
-
-            //Encoding attributes
-            EncodingAttributes attrs = new EncodingAttributes();
-            attrs.setFormat("mp3");
-            attrs.setAudioAttributes(audio);
-
-            //Encode
-            Encoder encoder = new Encoder();
-            encoder.encode(new MultimediaObject(source), target, attrs);
-
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-
-    }*/
 }

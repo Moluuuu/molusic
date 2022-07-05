@@ -1,4 +1,4 @@
-package com.molu.processing.pojo;
+package com.molu.entity;
 
 
 import lombok.AllArgsConstructor;

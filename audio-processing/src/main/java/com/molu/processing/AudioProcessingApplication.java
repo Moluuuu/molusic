@@ -1,11 +1,13 @@
 package com.molu.processing;
 
-import org.mybatis.spring.annotation.MapperScan;
+import com.molu.feign.client.AudioFileClient;
+import com.molu.feign.config.DefaultConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@MapperScan("com.molu.processing.mapper")
 @SpringBootApplication
+@EnableFeignClients(clients = {AudioFileClient.class}, defaultConfiguration = {DefaultConfig.class})
 public class AudioProcessingApplication {
 
     public static void main(String[] args) {

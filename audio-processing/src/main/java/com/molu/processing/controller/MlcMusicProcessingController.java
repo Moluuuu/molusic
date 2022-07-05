@@ -5,9 +5,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.nacos.common.utils.CollectionUtils;
 import com.alibaba.nacos.common.utils.MapUtil;
-import com.molu.processing.dictionary.MFD;
-import com.molu.processing.pojo.MlcMusic;
-import com.molu.processing.service.MlcMusicService;
+import com.molu.dictionary.MFD;
+import com.molu.entity.MlcMusic;
+import com.molu.processing.service.AudioProcessingService;
 import com.molu.processing.service.UploadService;
 import com.molu.processing.utils.FileUtils;
 import com.molu.processing.utils.MusicUtils;
@@ -29,7 +29,7 @@ public class MlcMusicProcessingController {
     UploadService uploadService;
 
     @Autowired
-    MlcMusicService mlcMUsicService;
+    AudioProcessingService mlcMusicService;
 
 
     // 上传操作
@@ -40,7 +40,7 @@ public class MlcMusicProcessingController {
         MlcMusic music = new MlcMusic();
         music.setType(type);
         // 对上传文件进行处理，如 格式的处理(转 MP3) 歌词文件的获取和处理（保存并上传到远程）
-        return mlcMUsicService.uploadProcessing(file, music, isTranslate);
+        return mlcMusicService.processing(file, music, isTranslate);
 
     }
 

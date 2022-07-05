@@ -13,6 +13,13 @@
     <name>audio-processing</name>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.molu</groupId>
+            <artifactId>audio-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!-- SpringCloud Alibaba Nacos -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -43,10 +50,10 @@
         </dependency>
 
         <!-- Mysql Connector -->
-        <dependency>
+<!--        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-        </dependency>
+        </dependency>-->
         <!--<dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -59,21 +66,16 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${spring-boot.mybatisplus}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.qiniu</groupId>
             <artifactId>qiniu-java-sdk</artifactId>
         </dependency>
 
-        <!-- 解析音频信息-->
-        <dependency>
-            <groupId>com.mpatric</groupId>
-            <artifactId>mp3agic</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org</groupId>
             <artifactId>jaudiotagger</artifactId>
@@ -98,6 +100,11 @@
         <dependency>
             <groupId>com.github.luben</groupId>
             <artifactId>zstd-jni</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.molu</groupId>
+            <artifactId>feign-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

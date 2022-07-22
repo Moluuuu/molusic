@@ -73,4 +73,9 @@ public class UploadServiceImpl implements UploadService {
         }
         return map;
     }
+
+    @Override
+    public Map<String, String> uploadToMinio(File file) {
+        return null;
+    }
 }

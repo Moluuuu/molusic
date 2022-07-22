@@ -7,4 +7,6 @@ import java.util.Map;
 public interface UploadService {
 
     Map<String, String> uploadToQiNiu(File file);
+
+    Map<String,String> uploadToMinio(File file);
 }

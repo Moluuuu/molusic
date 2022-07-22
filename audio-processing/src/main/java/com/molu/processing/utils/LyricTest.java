@@ -1,5 +1,6 @@
 package com.molu.processing.utils;
 
+import com.molu.utils.MusicUtils;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
@@ -23,8 +24,7 @@ public class LyricTest {
             if (!lyricMap.isEmpty()){
                 List<String> list = MusicUtils.processingLyric(lyricMap);
 //                MusicUtils.genAndSaveLyricFile(list,songName);
-            }
-        }
+            }        }
 
     }
 

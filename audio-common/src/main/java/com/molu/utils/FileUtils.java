@@ -16,7 +16,7 @@ public class FileUtils {
             assert files != null;
             Iterator<File> iterator = Arrays.stream(files).iterator();
             iterator.forEachRemaining((file) ->
-                    map.put(dirName + ": " + file.getName(), (MusicUtils.deleteFile(file.getAbsolutePath()))
+                    map.put(dirName + ": " + file.getName(), (deleteFile(file.getAbsolutePath()))
                             ? " 删除成功" : " 删除失败，请检查目录、文件是否存在")
             );
         }
@@ -50,5 +50,26 @@ public class FileUtils {
             }
         }
         return map;
+    }
+
+    // 删除文件
+    public static boolean deleteFile(String filePath) {
+        File file = new File(filePath);
+        System.out.println("要删除的文件所在位置: " + filePath);
+        if (file.exists()) return file.delete();
+        else {
+            System.out.println("Failed To Delete");
+            return false;
+        }
+    }
+
+    // 删除文件，重载
+    public static boolean deleteFile(File file) {
+        System.out.println("要删除的文件所在位置: " + file.getAbsolutePath());
+        if (file.exists()) return file.delete();
+        else {
+            System.out.println("Failed To Delete");
+            return false;
+        }
     }
 }

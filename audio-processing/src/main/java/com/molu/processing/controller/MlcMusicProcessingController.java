@@ -9,8 +9,8 @@ import com.molu.dictionary.MFD;
 import com.molu.entity.MlcMusic;
 import com.molu.processing.service.AudioProcessingService;
 import com.molu.processing.service.UploadService;
-import com.molu.processing.utils.FileUtils;
-import com.molu.processing.utils.MusicUtils;
+import com.molu.utils.FileUtils;
+import com.molu.utils.MusicUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,8 +34,10 @@ public class MlcMusicProcessingController {
 
     // 上传操作
     @PostMapping(value = "/upload")
-    public JSONObject getSongInfo(@RequestParam(value = "file") MultipartFile file
-            , @RequestParam("type") String type, @RequestParam("translate") String translate) {
+    public JSONObject getSongInfo(
+            @RequestParam(value = "file") MultipartFile file,
+            @RequestParam("type") String type,
+            @RequestParam("translate") String translate) {
         boolean isTranslate = Boolean.parseBoolean(translate);
         MlcMusic music = new MlcMusic();
         music.setType(type);
@@ -75,7 +77,7 @@ public class MlcMusicProcessingController {
             delList.forEach(deleteFile -> {
 
                 File file = new File(deleteFile);
-                map.put(index.getAndIncrement() + "." + file.getName(), MusicUtils.deleteFile(file) ?
+                map.put(index.getAndIncrement() + "." + file.getName(), FileUtils.deleteFile(file) ?
                         "删除成功" : "删除失败文件不存在，或出现异常!!!请检查服务器中对应资源");
 
             });

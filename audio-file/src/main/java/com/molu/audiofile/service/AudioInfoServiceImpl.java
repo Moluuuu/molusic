@@ -1,10 +1,10 @@
 package com.molu.audiofile.service;
 
 import com.molu.audiofile.mapper.MlcMusicMapper;
-import com.molu.audiofile.utils.FileUtils;
 import com.molu.dictionary.MFD;
 import com.molu.entity.MlcMusic;
 import com.molu.utils.DataUtils;
+import com.molu.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

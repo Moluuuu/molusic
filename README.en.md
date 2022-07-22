@@ -1,36 +1,12 @@
 # molusic
 
-#### Description
-暂定为音频存储网站，使用微服务架构 从零搭建，音频文件上传成功后会进行格式转换及压缩处理，最后保存在云端
+## Architecture
+- molusic
+    - audio-common Provides a common audio processing interface
+    - audio-file Provides audio file processing interface, and storage
+    - audio-processing Audio processing logic calls, the real service that handles audio
+    - feign-api After downloading the dependency, configure the database and port, and start the corresponding microservice
+    - gateway
 
-#### Software Architecture
-Software architecture description
-
-#### Installation
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### Instructions
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### Contribution
-
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
-
-
-#### Gitee Feature
-
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+## Directions for use
+After downloading the dependency, configure the database and port, and start the corresponding microservice

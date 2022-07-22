@@ -1,13 +1,8 @@
 package com.molu.processing.utils;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class LyricTest {
@@ -27,7 +22,7 @@ public class LyricTest {
             Map<String, List<String>> lyricMap = MusicUtils.getLyric(id, translate);
             if (!lyricMap.isEmpty()){
                 List<String> list = MusicUtils.processingLyric(lyricMap);
-                MusicUtils.genLyricFile(list,songName);
+//                MusicUtils.genAndSaveLyricFile(list,songName);
             }
         }
 

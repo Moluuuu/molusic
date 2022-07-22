@@ -1,8 +1,6 @@
 package com.molu.processing.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.nacos.shaded.org.checkerframework.checker.units.qual.A;
 import com.molu.dictionary.MFD;
 import com.molu.entity.MlcMusic;
 import com.molu.feign.client.AudioFileClient;
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -72,10 +71,11 @@ public class AudioProcessingServiceImpl implements AudioProcessingService {
         MlcMusic musicInfo = MusicUtils.getSongInfo(target, music);
         // 得到音乐的信息
         dataJson.put("musicInfo", musicInfo);
-        // 获取歌词文件并写入到上传路径
-        MusicUtils.findLyrics(MusicUtils.getSongName(processedName), isTranslate);
+        // 获取歌词信息
+        List<String> lyricInfo = MusicUtils.processingLyric(MusicUtils.getLyric(MusicUtils.getSongName(processedName), isTranslate));
+
         // 把歌词文件内容写入到 mp3文件里 并将文件保存到上传路径
-        MusicUtils.writeAndSaveLyricFile(target);
+        MusicUtils.genAndSaveLyricFile(lyricInfo,target);
 
         /*远程调用，将音频文件信息保存到数据库*/
         boolean saved = fileClient.saveFileInfo(dataJson.getJSONObject("musicInfo"));

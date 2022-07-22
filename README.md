@@ -1,37 +1,13 @@
 # molusic
 
-#### 介绍
-暂定为音频存储网站，使用微服务架构 从零搭建，音频文件上传成功后会进行格式转换及压缩处理，最后保存在云端
+## 架构
+- molusic
+  - audio-common 提供通用的音频处理接口
+  - audio-file 提供音频文件处理的接口，及存储
+  - audio-processing 音频处理逻辑调用，真正处理音频的服务
+  - feign-api 提供远程接口供模块直接调用
+  - gateway 网关
 
-#### 软件架构
-软件架构说明
+## 使用说明
 
-
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+下载依赖后，配置数据库、端口，启动对应微服务即可

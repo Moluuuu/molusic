@@ -1,9 +1,15 @@
 package com.molu.entity;
 
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.nacos.shaded.com.google.gson.JsonArray;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 
@@ -30,7 +36,7 @@ public class MlcMusic {
     // 歌曲 / 专辑封面
     private String albumCover;
     // 所在歌单
-    private String musicList;
+    private String[] musicList;
     // 数据插入时间
     private Date createTime;
     // 时长
@@ -44,6 +50,7 @@ public class MlcMusic {
     public MlcMusic() {
         this.id = UUID.randomUUID().toString().replace("-", "");
         this.createTime = new Date();
+        this.musicList = ArrayUtils.add(new String[]{},"default");
     }
 
 }

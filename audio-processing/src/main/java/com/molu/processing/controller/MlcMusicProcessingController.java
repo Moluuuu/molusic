@@ -11,14 +11,16 @@ import com.molu.processing.service.AudioProcessingService;
 import com.molu.processing.service.UploadService;
 import com.molu.utils.FileUtils;
 import com.molu.utils.MusicUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
@@ -32,61 +34,30 @@ public class MlcMusicProcessingController {
     AudioProcessingService mlcMusicService;
 
 
+    /**
+     *
+     * @param file 上传文件
+     * @param jsonObject 其他上传选项信息，如歌曲分类，风格(type)、添加到的歌单(musicList[])、所属专辑(album)
+     *                   歌词是否需要翻译(translate)、上传到的位置(uploadLocation)....
+     * @return 返回上传状态信息
+     */
+
+
+
     // 上传操作
     @PostMapping(value = "/upload")
     public JSONObject getSongInfo(
             @RequestParam(value = "file") MultipartFile file,
-            @RequestParam("type") String type,
-            @RequestParam("translate") String translate) {
-        boolean isTranslate = Boolean.parseBoolean(translate);
-        MlcMusic music = new MlcMusic();
-        music.setType(type);
+            @RequestHeader("uploadOptions") JSONObject jsonObject) {
+
         // 对上传文件进行处理，如 格式的处理(转 MP3) 歌词文件的获取和处理（保存并上传到远程）
-        return mlcMusicService.processing(file, music, isTranslate);
+        return mlcMusicService.processing(file,jsonObject);
 
     }
+
+
 
     // 上传完成后点击确认时执行的操作，作用是清空临时目录中的文件
     // TODO 这个接口迁到 file模块下，业务逻辑要改 不能删 .gitkeep占位文件
-    @PostMapping(value = "/cleanup")
-    public JSONObject getSongInfo(@RequestBody JSONObject jsonObject) {
-        JSONArray deleteFiles = jsonObject.getJSONArray("deleteFiles");
-        Map<String, String> map = new HashMap<>();
-        if (CollectionUtils.isEmpty(deleteFiles)) {
-            Map<String, String> delMusic = FileUtils.dirClean(new File(MFD.FILEPATH), "music");
-            Map<String, String> delLyric = FileUtils.dirClean(new File(MFD.LYRICPATH), "lyric");
-            Map<String, String> delUpload = FileUtils.dirClean(new File(MFD.UPLOADFILEPATH), "upload");
-            if (MapUtil.isNotEmpty(delMusic)) {
-                delMusic.forEach((k, v) -> {
-                    MapUtil.putIfValNoNull(map, k, v);
-                });
-            }
-            if (MapUtil.isNotEmpty(delLyric)) {
-                delLyric.forEach((k, v) -> {
-                    MapUtil.putIfValNoNull(map, k, v);
-                });
-            }
-            if (MapUtil.isNotEmpty(delUpload)) {
-                delUpload.forEach((k, v) -> {
-                    MapUtil.putIfValNoNull(map, k, v);
-                });
-            }
-        } else {
-            List<String> delList = deleteFiles.toJavaList(String.class);
-            AtomicInteger index = new AtomicInteger(0);
-            delList.forEach(deleteFile -> {
-
-                File file = new File(deleteFile);
-                map.put(index.getAndIncrement() + "." + file.getName(), FileUtils.deleteFile(file) ?
-                        "删除成功" : "删除失败文件不存在，或出现异常!!!请检查服务器中对应资源");
-
-            });
-        }
-        jsonObject.remove("deleteFile");
-        if (map.isEmpty()) jsonObject.put("delInfo", "临时目录为空");
-        else jsonObject.put("delInfo", map);
-
-        return jsonObject;
-    }
 
 }

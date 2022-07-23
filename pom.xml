@@ -49,6 +49,7 @@
         <java-version>2.7.3</java-version>
         <apache-commons-version>3.12.0</apache-commons-version>
         <jni-version>1.5.2-2</jni-version>
+        <minio-version>8.2.2</minio-version>
     </properties>
 
     <!--不知道怎么用的 api工具类-->
@@ -192,6 +193,11 @@
                 <groupId>com.qiniu</groupId>
                 <artifactId>qiniu-java-sdk</artifactId>
                 <version>${qiniu-sdk-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio-version}</version>
             </dependency>
             <dependency>
                 <groupId>ws.schild</groupId>

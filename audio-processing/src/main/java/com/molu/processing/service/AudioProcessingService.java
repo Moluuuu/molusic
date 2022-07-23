@@ -12,5 +12,6 @@ public interface AudioProcessingService {
 //
 //    boolean removeFile(String bucketName, String fileKey);
 
-    public JSONObject processing(MultipartFile sourceFile, MlcMusic music, boolean isTranslate);
+    public JSONObject processing(MultipartFile sourceFile, JSONObject jsonObject);
+    public MlcMusic parseJSONObject(JSONObject jsonObject);
 }

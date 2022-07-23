@@ -1,13 +1,18 @@
 package com.molu.processing.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.molu.audiofile.utils.MultipartFile2File;
 import com.molu.dictionary.MFD;
 import com.molu.entity.MlcMusic;
 import com.molu.feign.client.AudioFileClient;
 import com.molu.processing.utils.AudioUtils;
+import com.molu.processing.utils.minio.MinioUtils;
 import com.molu.processing.utils.ncmdump.Dump;
 import com.molu.utils.MusicUtils;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,16 +31,22 @@ public class AudioProcessingServiceImpl implements AudioProcessingService {
     @Autowired
     UploadService uploadService;
 
+    @Autowired
+    MinioUtils minioUtils;
 
-    // 文件上传处理
+
+    // 文件上传处理 todo 文件上传和文件格式转换最好分开，记得改一下 controller
     @SneakyThrows
     @Override
-    public JSONObject processing(MultipartFile sourceFile, MlcMusic music, boolean isTranslate) {
+    public JSONObject processing(MultipartFile sourceFile,JSONObject jsonObject) {
         // 作用域提升
         String processedName = null;
         File target = null;
         boolean convert = true;
         JSONObject dataJson = new JSONObject();
+        MlcMusic music = parseJSONObject(jsonObject);
+        Boolean isTranslate = jsonObject.getBoolean("isTranslate");
+        Boolean uploadLocation = jsonObject.getBoolean("uploadLocation");
 
         // 得到上传文件 原始文件名
         String sourceFileName = sourceFile.getOriginalFilename();
@@ -81,10 +92,41 @@ public class AudioProcessingServiceImpl implements AudioProcessingService {
         boolean saved = fileClient.saveFileInfo(dataJson.getJSONObject("musicInfo"));
         dataJson.put("saveState", "未存入数据库");
         if (saved){
-            dataJson.put("qiniuInfo", uploadService.uploadToQiNiu(target));
             dataJson.put("saveState", "已存入数据库");
+            if (uploadLocation){
+                // todo 这里可以获取一下 minio的返回信息，add到dataJson，在工具类里面做
+                minioUtils.upload(MultipartFile2File.parse(target),"musics");
+                return dataJson;
+            }
+            dataJson.put("qiniuInfo", uploadService.uploadToQiNiu(target));
         }
 
         return dataJson;
+    }
+
+    @Override
+    public MlcMusic parseJSONObject(JSONObject jsonObject) {
+        MlcMusic music = new MlcMusic();
+        // 获取类型，如果不为空设置进music对象
+        String type = jsonObject.getString("type");
+        if (StringUtils.isNotBlank(type)){
+            music.setType(type);
+        }
+        JSONArray musicList = jsonObject.getJSONArray("musicList");
+        // 如果不勾选 则存放至 default 歌单
+        if (musicList.contains("default")){
+            musicList.remove("default");
+            String[] musicMusicList = music.getMusicList();
+            if (musicList.size() > 0){
+                List<String> list = musicList.toJavaList(String.class);
+                // 把传入的 musicList元素添加到 music.musicList属性中
+                music.setMusicList(ArrayUtils.addAll(musicMusicList, list.toArray(new String[0])));
+            }
+        }
+        // 前端做校验，如果未指定专辑 则创建同名专辑，这边始终有值即可
+        music.setAlbumName(jsonObject.getString("album"));
+
+
+        return music;
     }
 }

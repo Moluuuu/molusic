@@ -41,7 +41,7 @@ public class ChangeTheTime {
                 min = min.substring(1);
             }
             try {
-                minInt = Integer.valueOf(min);
+                minInt = Integer.parseInt(min);
                 if (minInt < 0)
                     throw new NumberFormatException();
             } catch (NumberFormatException e) {
@@ -60,7 +60,7 @@ public class ChangeTheTime {
                 sec = sec.substring(1);
             }
             try {
-                secInt = Integer.valueOf(sec);
+                secInt = Integer.parseInt(sec);
                 if (secInt < -60 || secInt > 60)
                     throw new NumberFormatException();
             } catch (NumberFormatException e) {
@@ -79,7 +79,7 @@ public class ChangeTheTime {
                 msec = msec.substring(1);
             }
             try {
-                msecInt = Integer.valueOf(msec);
+                msecInt = Integer.parseInt(msec);
                 if (msecInt < -100 || msecInt > 100)
                     throw new NumberFormatException();
             } catch (NumberFormatException e) {
@@ -116,9 +116,9 @@ public class ChangeTheTime {
                     if (minflag != 0) {
                         int result;
                         if (minflag == 1) {
-                            result = Integer.valueOf(txtMin) + minInt;
+                            result = Integer.parseInt(txtMin) + minInt;
                         } else {
-                            result = Integer.valueOf(txtMin) - minInt;
+                            result = Integer.parseInt(txtMin) - minInt;
 
                         }
                         singleChange(sb, 0, result);
@@ -127,9 +127,9 @@ public class ChangeTheTime {
                     if (secflag != 0) {
                         int result;
                         if (secflag == 1) {
-                            result = Integer.valueOf(txtSec) + secInt;
+                            result = Integer.parseInt(txtSec) + secInt;
                         } else {
-                            result = Integer.valueOf(txtSec) - secInt;
+                            result = Integer.parseInt(txtSec) - secInt;
                         }
                         singleChange(sb, 1, result);
                     }
@@ -137,9 +137,9 @@ public class ChangeTheTime {
                     if (msecflag != 0) {
                         int result;
                         if (msecflag == 1) {
-                            result = Integer.valueOf(txtMsec) + msecInt;
+                            result = Integer.parseInt(txtMsec) + msecInt;
                         } else {
-                            result = Integer.valueOf(txtMsec) - msecInt;
+                            result = Integer.parseInt(txtMsec) - msecInt;
                         }
                         singleChange(sb, 2, result);
                     }
@@ -174,13 +174,13 @@ public class ChangeTheTime {
                     System.out.println(sb.toString());
                     System.out.println(result);
                     String temp = sb.substring(1, 3);
-                    int tempInt = Integer.valueOf(temp) - 1;
+                    int tempInt = Integer.parseInt(temp) - 1;
                     singleChange(sb, 0, tempInt);
                     result = result + 60;
                 } else if (result > 60) {
                     //向分钟送1
                     String temp = sb.substring(1, 3);
-                    int tempInt = Integer.valueOf(temp) + 1;
+                    int tempInt = Integer.parseInt(temp) + 1;
                     singleChange(sb, 0, tempInt);
                     result = result - 60;
                 }
@@ -195,13 +195,13 @@ public class ChangeTheTime {
                 if (result < 0) {
                     //向秒钟借1
                     String temp = sb.substring(4, 6);
-                    int tempInt = Integer.valueOf(temp) - 1;
+                    int tempInt = Integer.parseInt(temp) - 1;
                     singleChange(sb, 1, tempInt);
                     result = result + 100;
                 } else if (result > 100) {
                     //向秒钟送1
                     String temp = sb.substring(4, 6);
-                    int tempInt = Integer.valueOf(temp) + 1;
+                    int tempInt = Integer.parseInt(temp) + 1;
                     singleChange(sb, 1, tempInt);
                     result = result - 100;
                 }
@@ -215,9 +215,5 @@ public class ChangeTheTime {
                 return sb;
             }
         }
-    }
-
-    public static void main(String[] args) {
-        doTheChange();
     }
 }

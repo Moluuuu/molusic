@@ -3,7 +3,6 @@ package com.molu.audiofile.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.molu.audiofile.service.AudioInfoService;
-import com.molu.entity.MlcMusic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,9 +24,8 @@ public class AudioInfoController {
         return jsonObject;
     }
 
-    @PostMapping("/save") // 得到临时目录中的文件
-    public boolean saveFileInfo(@RequestBody JSONObject jsonObject) {
-        MlcMusic music = jsonObject.toJavaObject(MlcMusic.class);
-        return audioInfoService.saveFileInfo(music);
+    @PostMapping(value = "/cleanup") // 清理临时目录
+    public JSONObject cleanup(@RequestBody JSONObject jsonObject) {
+        return audioInfoService.clearTempDir(jsonObject);
     }
 }
